@@ -6,13 +6,13 @@
 #    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/03 17:42:47 by teliet           ###   ########.fr        #
+#    Updated: 2023/01/04 13:28:15 by teliet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = src/main.c \
+SRC = src/main.c src/actions.c \
 
 CC = gcc
 
