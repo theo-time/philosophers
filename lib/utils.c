@@ -6,16 +6,24 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:21:17 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/05 17:28:31 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:47:40 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void print_timestamp(struct timeval *tv) 
+
+long ms_since_start(struct timeval *tv, t_params params) 
 {
-  long sec = tv->tv_sec;
-  long ms = tv->tv_usec / 1000;
+
+//   printf("time since : %ld", elapsed_time);
+  return ((tv->tv_sec - params.simulation_start.tv_sec) * 1000 + (tv->tv_usec - params.simulation_start.tv_usec) / 1000);
+}
+
+void print_timestamp(struct timeval *tv, t_params params) 
+{
+  long sec = tv->tv_sec - params.simulation_start.tv_sec;
+  long ms = (tv->tv_usec - params.simulation_start.tv_usec) / 1000;
   long elapsed_time = sec * 1000 + ms;
   printf("%ld", elapsed_time);
 }
