@@ -6,13 +6,12 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:55:43 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:27:36 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-# define NUM_PHILOSOPHERS 8
 
 # include <pthread.h>
 # include <stdio.h>
@@ -36,6 +35,12 @@ long			ms_since_start(struct timeval *tv, t_params params);
 
 // Display
 void print_action(struct timeval current_time, t_philosopher *this, char *action);
-void		usleep_ms(int ms);
+
+void free_all(pthread_t *threads,pthread_mutex_t *print_rights, pthread_mutex_t *forks, t_philosopher *philosophers, int nb_philosophers);
+
+
+// Time 
+int     time_elapsed(struct timeval start_time, struct timeval current_time);
+void    ft_usleep(t_philosopher *this, time_t time);
 
 #endif

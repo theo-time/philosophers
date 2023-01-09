@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:43:53 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:28:56 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void print_action(struct timeval current_time, t_philosopher *this, char *action)
 {
+    if(this->params->dead_philo)
+        return ;
     pthread_mutex_lock(this->print_rights);
-    print_timestamp(&current_time, this->params);
+    print_timestamp(&current_time, *(this->params));
     printf(" %d %s\n", this->id, action);
     pthread_mutex_unlock(this->print_rights);
 }
@@ -38,7 +40,8 @@ void eating(t_philosopher	*this)
 	gettimeofday(&current_time, NULL); 
 	this->last_meal_time = current_time; 
     print_action(current_time, this, "is eating");
-    usleep(this->time_to_eat * 1000);
+    //usleep(this->time_to_eat * 1000);
+    ft_usleep(this, this->time_to_eat);
     //usleep_ms(this->time_to_eat);
     this->nb_meals++;
     this->state = 1;
@@ -88,5 +91,5 @@ void dies(t_philosopher *this)
 	gettimeofday(&current_time, NULL);  
     print_action(current_time, this, "died");
     this->alive = 0;
-    exit(1);
+    this->params->dead_philo = 1;
 }

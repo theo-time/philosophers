@@ -6,16 +6,26 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/06 18:18:31 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:26:05 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
+typedef struct s_model
+{
+	pthread_t 		*threads;
+	pthread_mutex_t *print_rights;
+	pthread_mutex_t *forks;
+	void 			*philosophers;
+}					t_model;
+
+
 typedef struct s_params
 {
 	struct timeval	simulation_start;
+	int				dead_philo;
 	int				number_of_philosophers;
 	int				time_to_eat;
 	int				time_to_die;
@@ -40,7 +50,9 @@ typedef struct s_philosopher
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*print_rights;
-	t_params		params;
+	pthread_mutex_t	*die_check_rights;
+	t_params		*params;
+	t_model			*model;
 }					t_philosopher;
 
 #endif
