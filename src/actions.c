@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 11:59:58 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:48:06 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,11 @@ void	dies(t_philosopher *this)
 	print_action(current_time, this, "died");
 	this->alive = 0;
 	this->params->dead_philo = 1;
+}
+
+void	end_of_simulation(t_philosopher *this)
+{
+	pthread_mutex_lock(this->die_check_rights);
+	this->params->dead_philo = 1;
+	pthread_mutex_unlock(this->die_check_rights);
 }

@@ -6,11 +6,22 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 17:09:24 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 18:26:33 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	init_philo(t_philosopher *this)
+{
+	if (this->id % 2 == 0)
+		eating(this);
+	else
+	{
+		thinking(this);
+		usleep(2000);
+	}
+}
 
 void	*philo_loop(void *philosopher)
 {
@@ -18,95 +29,26 @@ void	*philo_loop(void *philosopher)
 	struct timeval	current_time;
 
 	this = (t_philosopher *)philosopher;
-	// print_action(current_time, this, "is born");
-	// eating(this);
-	if (this->id % 2 == 0)
-		eating(this);
-	else
-	{
-		usleep(2000);
-		thinking(this);
-	}
-	// print_action(current_time, this, "is born");
+	init_philo(this);
 	while (this->alive)
 	{
 		if (this->params->dead_philo)
 			break ;
-		// usleep(1000000);
-		// printf("%d\n", time_elapsed(current_time));
-		// if(finished_eating(this,current_time))
-		// 	sleeping(this);
 		if (finished_sleeping(this, current_time))
 			thinking(this);
 		else if (finished_thinking(this, current_time))
 			eating(this);
 		ft_usleep(this, 1);
-		// if(this->nb_meals == this->params->eat_before_end)
-		// 	exit(1);
-		// gettimeofday(&current_time, NULL);
+		if (this->nb_meals == this->params->eat_before_end)
+			end_of_simulation(this);
+		gettimeofday(&current_time, NULL);
 		if (is_dead(this, current_time))
 			dies(this);
 	}
-	return (0);
+	return (NULL);
 }
 
-void	populate(t_philosopher *philosophers, t_model *model)
-{
-	int				i;
-	struct timeval	current_time;
-
-	i = 0;
-	gettimeofday(&current_time, NULL);
-	while (i < model->params->number_of_philosophers)
-	{
-		philosophers[i].id = i + 1;
-		philosophers[i].alive = 1;
-		philosophers[i].state = 0;
-		philosophers[i].last_meal_time = current_time;
-		philosophers[i].time_to_die = model->params->time_to_die;
-		philosophers[i].time_to_eat = model->params->time_to_eat;
-		philosophers[i].time_to_sleep = model->params->time_to_sleep;
-		philosophers[i].left_fork = &model->forks[i];
-		philosophers[i].right_fork = &model->forks[(i + 1)
-			% model->params->number_of_philosophers];
-		philosophers[i].print_rights = model->print_rights;
-		philosophers[i].params = model->params;
-		philosophers[i].die_check_rights = model->die_check_rights;
-		philosophers[i].nb_meals = 0;
-		i++;
-	}
-	model->philosophers = philosophers;
-}
-
-t_params	get_params(int argc, char **argv)
-{
-	t_params	params;
-
-	(void)argc;
-	params.number_of_philosophers = ft_atoi(argv[1]);
-	params.time_to_die = ft_atoi(argv[2]);
-	params.time_to_eat = ft_atoi(argv[3]);
-	params.time_to_sleep = ft_atoi(argv[4]);
-	params.dead_philo = 0;
-	if (argc == 6)
-		params.eat_before_end = ft_atoi(argv[5]);
-	else
-		params.eat_before_end = -1;
-	return (params);
-}
-
-t_model	get_model(pthread_t *threads , pthread_mutex_t *print_rights,
-			pthread_mutex_t *forks, void *philosophers)
-{
-	t_model model;
-	model.threads = threads;
-	model.print_rights = print_rights;
-	model.forks = forks;
-	model.philosophers = philosophers;
-	return (model);
-}
-
-void	lonely_philo(t_philosopher *philosophers)
+int	lonely_philo(t_philosopher *philosophers)
 {
 	struct timeval	current_time;
 
@@ -116,77 +58,45 @@ void	lonely_philo(t_philosopher *philosophers)
 	usleep(philosophers[0].time_to_die * 1000);
 	gettimeofday(&current_time, NULL);
 	print_action(current_time, &philosophers[0], " died");
+	return (0);
 }
 
-void	free_all(t_model *model)
+void	launch_threads(t_model *model, t_params params)
 {
-	int	i;
+	int				i;
+	t_philosopher	*philosophers;
 
+	philosophers = (t_philosopher *)model->philosophers;
 	i = 0;
-	while (i < model->params->number_of_philosophers)
+	while (i < params.number_of_philosophers)
 	{
-		pthread_mutex_destroy(model->forks + i);
+		pthread_create(&model->threads[i], NULL, philo_loop,
+			&(philosophers[i]));
 		i++;
 	}
-	pthread_mutex_destroy(model->print_rights);
-	free(model->philosophers);
-	free(model->threads);
-	free(model->forks);
+	i = 0;
+	while (i < params.number_of_philosophers)
+	{
+		pthread_join(model->threads[i], NULL);
+		i++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	int i;
-	pthread_t *threads;
-	pthread_mutex_t die_check_rights = PTHREAD_MUTEX_INITIALIZER ;
-	pthread_mutex_t print_rights = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_t *forks;
-	t_philosopher *philosophers;
-	t_params params;
-	t_model model;
-
-	i = 0;
+	t_params	params;
+	t_model		model;
 
 	if (!(argc == 5 || argc == 6))
 		return (1);
-	params = get_params(argc, argv);
-	threads = malloc(params.number_of_philosophers * sizeof(pthread_t));
-	forks = malloc(params.number_of_philosophers * sizeof(pthread_mutex_t));
-	philosophers = malloc(params.number_of_philosophers
-			* sizeof(t_philosopher));
-	// pthread_mutex_init(&die_check_rights, NULL)
-	while (i < params.number_of_philosophers)
-	{
-		if (pthread_mutex_init(&forks[i], NULL) != 0)
-		{
-			perror("pthread_mutex_init");
-			return (1);
-		}
-		i++;
-	}
-	model = get_model(threads, &print_rights, forks, philosophers);
-	model.params = &params;
-	model.print_rights = &print_rights;
-	model.die_check_rights = &die_check_rights;
-	gettimeofday(&params.simulation_start, NULL);
-	populate(philosophers, &model);
-	if (params.number_of_philosophers == 1)
-	{
-		lonely_philo(philosophers);
+	if (!get_params(&params, argc, argv))
 		return (1);
-	}
-	i = 0;
-	while (i < params.number_of_philosophers)
-	{
-		pthread_create(&threads[i], NULL, philo_loop, &(philosophers[i]));
-		i++;
-	}
-	i = 0;
-	while (i < params.number_of_philosophers)
-	{
-		pthread_join(threads[i], NULL);
-		i++;
-	}
-
+	if (!get_model(&model, &params))
+		return (1);
+	gettimeofday(&params.simulation_start, NULL);
+	populate(&model);
+	if (params.number_of_philosophers == 1)
+		return (lonely_philo(model.philosophers));
+	launch_threads(&model, params);
 	free_all(&model);
 }

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 16:57:28 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 18:24:31 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ int				finished_sleeping(t_philosopher *this, struct timeval time);
 int				finished_thinking(t_philosopher *this, struct timeval time);
 void			print_timestamp(struct timeval *tv, t_params params);
 
+// Init
+void			populate(t_model *model);
+int				get_params(t_params	*params, int argc, char **argv);
+int				get_model(t_model *model, t_params *params);
+int				init_forks(t_model *model);
+
 // Misc
 void			free_all(t_model *model);
-// void populate(t_model *model, t_params *params, pthread_mutex_t *die_check_rights, pthread_mutex_t *print_rights);
+void			end_of_simulation(t_philosopher *this);
 
 #endif
