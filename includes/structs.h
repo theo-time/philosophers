@@ -1,26 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/09 18:26:05 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:55:07 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
-
-typedef struct s_model
-{
-	pthread_t 		*threads;
-	pthread_mutex_t *print_rights;
-	pthread_mutex_t *forks;
-	void 			*philosophers;
-}					t_model;
-
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 typedef struct s_params
 {
@@ -32,6 +23,15 @@ typedef struct s_params
 	int				time_to_sleep;
 	int				eat_before_end;
 }					t_params;
+
+typedef struct s_model
+{
+	pthread_t		*threads;
+	pthread_mutex_t	*print_rights;
+	pthread_mutex_t	*forks;
+	void			*philosophers;
+	t_params		params;
+}					t_model;
 
 // State 0 : thinking, state 1 : eating, state 2 : sleeping
 typedef struct s_philosopher

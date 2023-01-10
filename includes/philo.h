@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/09 18:27:36 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:57:28 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include "struct.h"
+# include "structs.h"
 
 // Philosopher action
 void			eating(t_philosopher *this);
@@ -30,17 +30,21 @@ void			thinking(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);
-void			print_timestamp(struct timeval *tv, t_params params);
-long			ms_since_start(struct timeval *tv, t_params params);
 
 // Display
-void print_action(struct timeval current_time, t_philosopher *this, char *action);
+void			print_action(struct timeval t, t_philosopher *this, char *act);
 
-void free_all(pthread_t *threads,pthread_mutex_t *print_rights, pthread_mutex_t *forks, t_philosopher *philosophers, int nb_philosophers);
+// Time
+int				time_elapsed(struct timeval start_time, struct timeval time);
+void			ft_usleep(t_philosopher *this, time_t time);
+int				is_dead(t_philosopher *this, struct timeval time);
+int				finished_eating(t_philosopher *this, struct timeval time);
+int				finished_sleeping(t_philosopher *this, struct timeval time);
+int				finished_thinking(t_philosopher *this, struct timeval time);
+void			print_timestamp(struct timeval *tv, t_params params);
 
-
-// Time 
-int     time_elapsed(struct timeval start_time, struct timeval current_time);
-void    ft_usleep(t_philosopher *this, time_t time);
+// Misc
+void			free_all(t_model *model);
+// void populate(t_model *model, t_params *params, pthread_mutex_t *die_check_rights, pthread_mutex_t *print_rights);
 
 #endif

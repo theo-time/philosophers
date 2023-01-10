@@ -1,59 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:21:17 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/09 18:55:47 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 12:00:13 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long now(t_philosopher *this) 
-{
-  	struct timeval tv;
- 	gettimeofday(&tv, NULL);
-  	return (time_elapsed(this->params->simulation_start, tv));
-}
-
-
-void    ft_usleep(t_philosopher *this, time_t time)
-{
-    time_t    goal;
-
-    goal = 0;
-    goal = now(this) + time;
-    while (now(this) < goal)
-    {
-        pthread_mutex_lock(this->die_check_rights);
-        if (this->params->dead_philo)
-        {
-            pthread_mutex_unlock(this->die_check_rights);
-            break ;
-        }
-        pthread_mutex_unlock(this->die_check_rights);
-        usleep(50);
-    }
-}
-
-
-long ms_since_start(struct timeval *tv, t_params params) 
-{
-
-//   printf("time since : %ld", elapsed_time);
-  return ((tv->tv_sec - params.simulation_start.tv_sec) * 1000 + (tv->tv_usec - params.simulation_start.tv_usec) / 1000);
-}
-
-void print_timestamp(struct timeval *tv, t_params params) 
-{
-  long sec = tv->tv_sec - params.simulation_start.tv_sec;
-  long ms = (tv->tv_usec - params.simulation_start.tv_usec) / 1000;
-  long elapsed_time = sec * 1000 + ms;
-  printf("%ld", elapsed_time);
-}
 
 size_t	ft_strlen(const char *str)
 {
