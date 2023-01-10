@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 16:59:35 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:09:24 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,33 +50,32 @@ void	*philo_loop(void *philosopher)
 	return (0);
 }
 
-void	populate(t_philosopher *philosophers, pthread_mutex_t *forks,
-		t_params *params, pthread_mutex_t *print_rights,
-		pthread_mutex_t *die_check_rights)
+void	populate(t_philosopher *philosophers, t_model *model)
 {
 	int				i;
 	struct timeval	current_time;
 
 	i = 0;
 	gettimeofday(&current_time, NULL);
-	while (i < params->number_of_philosophers)
+	while (i < model->params->number_of_philosophers)
 	{
 		philosophers[i].id = i + 1;
 		philosophers[i].alive = 1;
 		philosophers[i].state = 0;
 		philosophers[i].last_meal_time = current_time;
-		philosophers[i].time_to_die = params->time_to_die;
-		philosophers[i].time_to_eat = params->time_to_eat;
-		philosophers[i].time_to_sleep = params->time_to_sleep;
-		philosophers[i].left_fork = &forks[i];
-		philosophers[i].right_fork = &forks[(i + 1)
-			% params->number_of_philosophers];
-		philosophers[i].print_rights = print_rights;
-		philosophers[i].params = params;
-		philosophers[i].die_check_rights = die_check_rights;
+		philosophers[i].time_to_die = model->params->time_to_die;
+		philosophers[i].time_to_eat = model->params->time_to_eat;
+		philosophers[i].time_to_sleep = model->params->time_to_sleep;
+		philosophers[i].left_fork = &model->forks[i];
+		philosophers[i].right_fork = &model->forks[(i + 1)
+			% model->params->number_of_philosophers];
+		philosophers[i].print_rights = model->print_rights;
+		philosophers[i].params = model->params;
+		philosophers[i].die_check_rights = model->die_check_rights;
 		philosophers[i].nb_meals = 0;
 		i++;
 	}
+	model->philosophers = philosophers;
 }
 
 t_params	get_params(int argc, char **argv)
@@ -124,7 +123,7 @@ void	free_all(t_model *model)
 	int	i;
 
 	i = 0;
-	while (i < model->params.number_of_philosophers)
+	while (i < model->params->number_of_philosophers)
 	{
 		pthread_mutex_destroy(model->forks + i);
 		i++;
@@ -139,8 +138,8 @@ int	main(int argc, char **argv)
 {
 	int i;
 	pthread_t *threads;
+	pthread_mutex_t die_check_rights = PTHREAD_MUTEX_INITIALIZER ;
 	pthread_mutex_t print_rights = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_t die_check_rights = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_t *forks;
 	t_philosopher *philosophers;
 	t_params params;
@@ -155,6 +154,7 @@ int	main(int argc, char **argv)
 	forks = malloc(params.number_of_philosophers * sizeof(pthread_mutex_t));
 	philosophers = malloc(params.number_of_philosophers
 			* sizeof(t_philosopher));
+	// pthread_mutex_init(&die_check_rights, NULL)
 	while (i < params.number_of_philosophers)
 	{
 		if (pthread_mutex_init(&forks[i], NULL) != 0)
@@ -165,9 +165,11 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	model = get_model(threads, &print_rights, forks, philosophers);
-	model.params = params;
+	model.params = &params;
+	model.print_rights = &print_rights;
+	model.die_check_rights = &die_check_rights;
 	gettimeofday(&params.simulation_start, NULL);
-	populate(philosophers, forks, &params, &print_rights, &die_check_rights);
+	populate(philosophers, &model);
 	if (params.number_of_philosophers == 1)
 	{
 		lonely_philo(philosophers);

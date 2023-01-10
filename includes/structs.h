@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 16:55:07 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:05:16 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ typedef struct s_model
 {
 	pthread_t		*threads;
 	pthread_mutex_t	*print_rights;
+	pthread_mutex_t	*die_check_rights;
 	pthread_mutex_t	*forks;
 	void			*philosophers;
-	t_params		params;
+	t_params		*params;
 }					t_model;
 
 // State 0 : thinking, state 1 : eating, state 2 : sleeping
