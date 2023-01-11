@@ -6,7 +6,7 @@
 #    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/11 15:17:39 by teliet           ###   ########.fr        #
+#    Updated: 2023/01/11 16:17:47 by teliet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,13 @@ NAME = philo
 SRC = src/main.c src/actions.c src/eating.c src/timers.c src/init.c \
 lib/parser_utils.c lib/time_utils.c  src/free_all.c \
 
-SRC_bonus = bonus/main.c bonus/actions.c bonus/eating.c bonus/timers.c bonus/init.c \
-lib/parser_utils.c lib/time_utils.c  bonus/free_all.c \
+SRC_bonus = bonus/src/main.c bonus/src/actions.c bonus/src/eating.c bonus/src/timers.c bonus/src/init.c \
+ bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c \
 
 CC = gcc
 
-HEADERS = -I ./includes
+HEADERS = ./includes
+HEADERS_bonus = ./bonus/includes
 
 LIBS = 
 
@@ -29,24 +30,27 @@ OBJ_bonus = $(SRC_bonus:.c=.o)
 
 all: ${NAME}
  
-$(NAME): $(OBJ) $(LIBS)
-	$(CC) $(OBJ) $(LIBS) $(HEADERS) -o $(NAME)
+$(NAME): $(OBJ) $(LIBS) $(HEADERS)
+	$(CC) $(OBJ) $(LIBS) -I $(HEADERS) -o $(NAME)
 
 $(LIBS):
 	make -C lib/ft_printf
 
-bonus: $(OBJ_bonus) $(LIBS)
-	$(CC) $(OBJ_bonus) $(LIBS) $(HEADERS) -o philo_bonus
+#$(OBJ_bonus):$(SRC_bonus) $(HEADERS_bonus)
+#	$(CC) -Wall -Wextra -Werror -I $(HEADERS_bonus) -c $< -o $@
 
+bonus: $(SRC_bonus) $(LIBS) $(HEADERS_bonus)
+	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o philo_bonus
 	
-debug: $(LIBS) clean
-	$(CC) $(SRC) $(LIBS) $(HEADERS) $(LFLAGS) -g3 -o $(NAME) # -fsanitize=thread
+debug: $(LIBS) $(HEADERS) clean
+	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -o $(NAME) # -fsanitize=thread
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror $(HEADERS) -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -I $(HEADERS) -c $< -o $@
 
 clean:
 	/bin/rm -f ${OBJ}
+	/bin/rm -f ${OBJ_bonus}
 
 fclean: clean
 	/bin/rm -f ${NAME}

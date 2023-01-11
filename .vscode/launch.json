@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/philo",
+            "program": "${workspaceFolder}/philo_bonus",
             "args": ["4", "410", "200", "200"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

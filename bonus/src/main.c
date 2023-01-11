@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 15:14:34 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 19:04:49 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void	*philo_loop(void *philosopher)
 	t_philosopher	*this;
 	struct timeval	current_time;
 
+ 
 	this = (t_philosopher *)philosopher;
+    //printf("Hello world from child %d\n", this->id);
 	init_philo(this);
 	while (this->alive)
 	{
@@ -61,23 +63,47 @@ int	lonely_philo(t_philosopher *philosophers)
 	return (0);
 }
 
-void	launch_threads(t_model *model, t_params params)
+void	launch_child(t_model *model, t_params params, t_philosopher this)
+{
+	
+}
+
+void	launch_child_processes(t_model *model, t_params params)
 {
 	int				i;
 	t_philosopher	*philosophers;
-
+	t_philosopher	this;
+    pid_t pid;
+    pid_t *pid_list;
+	
+	pid_list = malloc(sizeof(pid_t) * params.number_of_philosophers);
 	philosophers = (t_philosopher *)model->philosophers;
 	i = 0;
 	while (i < params.number_of_philosophers)
 	{
-		pthread_create(&model->threads[i], NULL, philo_loop,
-			&(philosophers[i]));
+		this = philosophers[i];
+        pid = fork();
+        if (pid == 0) {
+            // child process
+			philo_loop(&this);
+			free_all(model);
+			exit(0);
+        } else if (pid > 0) {
+			pid_list[i] = pid;
+            // parent process
+            // wait for child to finish before continuing
+           // waitpid(pid, NULL, 0);
+        } else {
+            // fork error
+            printf("Fork failed");
+            exit(1);
+        }
 		i++;
 	}
 	i = 0;
 	while (i < params.number_of_philosophers)
 	{
-		pthread_join(model->threads[i], NULL);
+		waitpid(pid_list[i], NULL, 0);
 		i++;
 	}
 }
@@ -97,6 +123,6 @@ int	main(int argc, char **argv)
 	populate(&model);
 	if (params.number_of_philosophers == 1)
 		return (lonely_philo(model.philosophers));
-	launch_threads(&model, params);
+	launch_child_processes(&model, params);
 	free_all(&model);
 }

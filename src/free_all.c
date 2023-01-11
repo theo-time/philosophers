@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:58:14 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 18:17:53 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 15:53:27 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,6 @@ void	free_all(t_model *model)
 	free(model->philosophers);
 	free(model->threads);
 	free(model->forks);
+	free(model->print_rights);
+	free(model->die_check_rights);
 }

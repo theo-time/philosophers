@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:39:35 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 11:42:23 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 19:11:09 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	eating(t_philosopher *this)
 	this->last_meal_time = current_time;
 	print_action(current_time, this, "is eating");
 	//usleep(this->time_to_eat * 1000);
-	ft_usleep(this, this->time_to_eat);
+	//ft_usleep(this, this->time_to_eat);
 	//usleep_ms(this->time_to_eat);
 	this->nb_meals++;
 	this->state = 1;

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:58:14 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 18:17:53 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 16:26:31 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,11 @@
 
 void	free_all(t_model *model)
 {
-	int	i;
-
-	i = 0;
-	while (i < model->params->number_of_philosophers)
-	{
-		pthread_mutex_destroy(model->forks + i);
-		i++;
-	}
-	pthread_mutex_destroy(model->print_rights);
+	sem_close(model->forks);
+	sem_unlink("forks");
+	sem_close(model->die_check_rights);
+	sem_unlink("die_check_rights");
+	sem_close(model->print_rights);
+	sem_unlink("print_rights");
 	free(model->philosophers);
-	free(model->threads);
-	free(model->forks);
 }

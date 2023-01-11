@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 18:28:59 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 16:19:29 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,17 @@ void	print_action(struct timeval current_time, t_philosopher *this,
 {
 	if (this->params->dead_philo)
 		return ;
-	pthread_mutex_lock(this->print_rights);
+	sem_wait(this->print_rights);
 	print_timestamp(&current_time, *(this->params));
 	printf(" %d %s\n", this->id, action);
-	pthread_mutex_unlock(this->print_rights);
+	sem_post(this->print_rights);
 }
 
 void	sleeping(t_philosopher *this)
 {
 	struct timeval	current_time;
-
-	drop_fork(this->left_fork);
-	drop_fork(this->right_fork);
+	drop_fork(this);
+	drop_fork(this);
 	gettimeofday(&current_time, NULL);
 	this->last_sleep_time = current_time;
 	print_action(current_time, this, "is sleeping");
@@ -57,7 +56,7 @@ void	dies(t_philosopher *this)
 
 void	end_of_simulation(t_philosopher *this)
 {
-	pthread_mutex_lock(this->die_check_rights);
+	sem_wait(this->die_check_rights);
 	this->params->dead_philo = 1;
-	pthread_mutex_unlock(this->die_check_rights);
+	sem_post(this->die_check_rights);
 }

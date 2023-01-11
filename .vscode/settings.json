@@ -8,6 +8,8 @@
         "pthread.h": "c",
         "struct.h": "c",
         "structs.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "semaphore.h": "c",
+        "fcntl.h": "c"
     }
 }

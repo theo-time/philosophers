@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 15:04:26 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 19:06:56 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	populate(t_model *model)
 
 int	get_params(t_params *params, int argc, char **argv)
 {
+	if(!is_integer(argv[1]) || !is_integer(argv[2]) || !is_integer(argv[3]) || !is_integer(argv[4]))
+		return (0);
 	params->number_of_philosophers = ft_atoi(argv[1]);
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);

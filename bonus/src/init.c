@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 15:04:26 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 16:29:56 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ void	populate(t_model *model)
 		philosophers[i].time_to_die = model->params->time_to_die;
 		philosophers[i].time_to_eat = model->params->time_to_eat;
 		philosophers[i].time_to_sleep = model->params->time_to_sleep;
-		philosophers[i].left_fork = &model->forks[i];
-		philosophers[i].right_fork = &model->forks[(i + 1)
-			% model->params->number_of_philosophers];
+		philosophers[i].forks = model->forks;
 		philosophers[i].print_rights = model->print_rights;
 		philosophers[i].params = model->params;
 		philosophers[i].die_check_rights = model->die_check_rights;
@@ -54,43 +52,37 @@ int	get_params(t_params *params, int argc, char **argv)
 	return (1);
 }
 
-int	init_forks(t_model *model)
-{
-	int	i;
+// int	init_forks(t_model *model)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < model->params->number_of_philosophers)
-	{
-		if (pthread_mutex_init(&(model->forks[i]), NULL) != 0)
-		{
-			printf("pthread_mutex_init");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
+// 	i = 0;
+// 	while (i < model->params->number_of_philosophers)
+// 	{
+// 		if (pthread_mutex_init(&(model->forks[i]), NULL) != 0)
+// 		{
+// 			printf("pthread_mutex_init");
+// 			return (0);
+// 		}
+// 		i++;
+// 	}
+// 	return (1);
+// }
 
 int	get_model(t_model *model, t_params *params)
 {
-	pthread_t		*threads;
-	pthread_mutex_t	*forks;
 	t_philosopher	*philosophers;
+	sem_t 			*forks;
 
-	threads = malloc(params->number_of_philosophers * sizeof(pthread_t));
-	forks = malloc(params->number_of_philosophers * sizeof(pthread_mutex_t));
+	forks = sem_open("forks", O_CREAT, 0644, params->number_of_philosophers);
+	model->print_rights = sem_open("print_rights", O_CREAT, 0644, 1);
+	model->die_check_rights = sem_open("die_check_rights", O_CREAT, 0644, 1);
 	philosophers = malloc(params->number_of_philosophers
 			* sizeof(t_philosopher));
-	model->threads = threads;
 	model->forks = forks;
 	model->philosophers = philosophers;
-	model->print_rights = malloc(sizeof(pthread_mutex_t));
-	model->die_check_rights = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(model->print_rights, NULL);
-	pthread_mutex_init(model->die_check_rights, NULL);
 	model->params = params;
-	init_forks(model);
-	if (threads == 0 || forks == 0 || philosophers == 0)
+	if (philosophers == 0)
 		return (0);
 	return (1);
 }

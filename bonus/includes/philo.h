@@ -6,31 +6,34 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 19:07:21 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/11 16:25:49 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <fcntl.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include "structs.h"
 
 // Philosopher action
 void			eating(t_philosopher *this);
 void			sleeping(t_philosopher *this);
-void			take_fork(t_philosopher *this, pthread_mutex_t *fork);
-void			drop_fork(pthread_mutex_t *fork);
+void			take_fork(t_philosopher *this);
+void			drop_fork(t_philosopher *this);
 void			dies(t_philosopher *this);
 void			thinking(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);
-int	            is_integer(char *str);
 
 // Display
 void			print_action(struct timeval t, t_philosopher *this, char *act);
@@ -46,7 +49,7 @@ void			print_timestamp(struct timeval *tv, t_params params);
 
 // Init
 void			populate(t_model *model);
-int				get_params(t_params	*params, int argc, char **argv);
+int				get_params(t_params *params, int argc, char **argv);
 int				get_model(t_model *model, t_params *params);
 int				init_forks(t_model *model);
 
