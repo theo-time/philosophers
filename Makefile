@@ -6,7 +6,7 @@
 #    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/11 16:17:47 by teliet           ###   ########.fr        #
+#    Updated: 2023/01/12 13:13:41 by teliet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC = src/main.c src/actions.c src/eating.c src/timers.c src/init.c \
 lib/parser_utils.c lib/time_utils.c  src/free_all.c \
 
 SRC_bonus = bonus/src/main.c bonus/src/actions.c bonus/src/eating.c bonus/src/timers.c bonus/src/init.c \
- bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c \
+ bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c bonus/src/errors.c \
 
 CC = gcc
 

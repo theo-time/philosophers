@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_all.c                                         :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 17:58:14 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 12:57:34 by teliet           ###   ########.fr       */
+/*   Created: 2023/01/12 13:12:10 by teliet            #+#    #+#             */
+/*   Updated: 2023/01/12 13:16:27 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_all(t_model *model)
+void	fork_error(void)
 {
-	sem_close(model->forks);
-	sem_unlink("forks");
-	sem_close(model->die_check_rights);
-	sem_unlink("die_check_rights");
-	sem_close(model->print_rights);
-	sem_unlink("print_rights");
-	free(model->philosophers);
-	free(model->pid_list);
+	printf("Fork failed");
+	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 16:19:29 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:17:28 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	print_action(struct timeval current_time, t_philosopher *this,
 void	sleeping(t_philosopher *this)
 {
 	struct timeval	current_time;
+
 	drop_fork(this);
 	drop_fork(this);
 	gettimeofday(&current_time, NULL);

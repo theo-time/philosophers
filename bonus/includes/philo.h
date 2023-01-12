@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 16:25:49 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:13:55 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void			thinking(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);
+int				is_integer(char *str);
 
 // Display
 void			print_action(struct timeval t, t_philosopher *this, char *act);
@@ -56,5 +57,8 @@ int				init_forks(t_model *model);
 // Misc
 void			free_all(t_model *model);
 void			end_of_simulation(t_philosopher *this);
+
+// Errors
+void			fork_error(void);
 
 #endif

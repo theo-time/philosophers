@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 19:06:56 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:18:05 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	populate(t_model *model)
 
 int	get_params(t_params *params, int argc, char **argv)
 {
-	if(!is_integer(argv[1]) || !is_integer(argv[2]) || !is_integer(argv[3]) || !is_integer(argv[4]))
+	if (!is_integer(argv[1]) || !is_integer(argv[2]) || !is_integer(argv[3])
+		|| !is_integer(argv[4]))
 		return (0);
 	params->number_of_philosophers = ft_atoi(argv[1]);
 	params->time_to_die = ft_atoi(argv[2]);
@@ -50,7 +51,12 @@ int	get_params(t_params *params, int argc, char **argv)
 	params->time_to_sleep = ft_atoi(argv[4]);
 	params->dead_philo = 0;
 	if (argc == 6)
-		params->eat_before_end = ft_atoi(argv[5]);
+	{
+		if (is_integer(argv[5]))
+			params->eat_before_end = ft_atoi(argv[5]);
+		else
+			return (0);
+	}
 	else
 		params->eat_before_end = -1;
 	return (1);
@@ -92,7 +98,7 @@ int	get_model(t_model *model, t_params *params)
 	pthread_mutex_init(model->die_check_rights, NULL);
 	model->params = params;
 	init_forks(model);
-	if (threads == 0 || forks == 0 || philosophers == 0)
+	if (!threads || !forks || !philosophers)
 		return (0);
 	return (1);
 }

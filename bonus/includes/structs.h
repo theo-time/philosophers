@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 16:29:33 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 12:56:23 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_model
 	sem_t			*print_rights;
 	sem_t			*die_check_rights;
 	sem_t			*forks;
+	pid_t			*pid_list;
 	void			*philosophers;
 	t_params		*params;
 }					t_model;

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 16:29:56 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:17:44 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,41 +40,41 @@ void	populate(t_model *model)
 
 int	get_params(t_params *params, int argc, char **argv)
 {
+	if (!is_integer(argv[1]) || !is_integer(argv[2]) || !is_integer(argv[3])
+		|| !is_integer(argv[4]))
+		return (0);
 	params->number_of_philosophers = ft_atoi(argv[1]);
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
 	params->dead_philo = 0;
 	if (argc == 6)
-		params->eat_before_end = ft_atoi(argv[5]);
+	{
+		if (is_integer(argv[5]))
+			params->eat_before_end = ft_atoi(argv[5]);
+		else
+			return (0);
+	}
 	else
 		params->eat_before_end = -1;
 	return (1);
 }
 
-// int	init_forks(t_model *model)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < model->params->number_of_philosophers)
-// 	{
-// 		if (pthread_mutex_init(&(model->forks[i]), NULL) != 0)
-// 		{
-// 			printf("pthread_mutex_init");
-// 			return (0);
-// 		}
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
 int	get_model(t_model *model, t_params *params)
 {
 	t_philosopher	*philosophers;
-	sem_t 			*forks;
+	sem_t			*forks;
 
-	forks = sem_open("forks", O_CREAT, 0644, params->number_of_philosophers);
+	forks = sem_open("forks", O_CREAT | O_EXCL, 0644,
+			params->number_of_philosophers);
+	if (forks == SEM_FAILED)
+	{
+		sem_close(forks);
+		sem_unlink("forks");
+		forks = sem_open("forks", O_CREAT, 0644,
+				params->number_of_philosophers);
+	}
+	model->pid_list = malloc(sizeof(pid_t) * params->number_of_philosophers);
 	model->print_rights = sem_open("print_rights", O_CREAT, 0644, 1);
 	model->die_check_rights = sem_open("die_check_rights", O_CREAT, 0644, 1);
 	philosophers = malloc(params->number_of_philosophers
@@ -82,7 +82,7 @@ int	get_model(t_model *model, t_params *params)
 	model->forks = forks;
 	model->philosophers = philosophers;
 	model->params = params;
-	if (philosophers == 0)
+	if (!philosophers || !model->pid_list)
 		return (0);
 	return (1);
 }
