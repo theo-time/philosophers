@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 13:18:05 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 18:20:33 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	populate(t_model *model)
 		philosophers[i].right_fork = &model->forks[(i + 1)
 			% model->params->number_of_philosophers];
 		philosophers[i].print_rights = model->print_rights;
+		philosophers[i].sim_end_check_rights = model->sim_end_check_rights;
 		philosophers[i].params = model->params;
 		philosophers[i].die_check_rights = model->die_check_rights;
 		philosophers[i].nb_meals = 0;
@@ -50,6 +51,7 @@ int	get_params(t_params *params, int argc, char **argv)
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
 	params->dead_philo = 0;
+	params->fed_philos = 0;
 	if (argc == 6)
 	{
 		if (is_integer(argv[5]))
@@ -94,6 +96,8 @@ int	get_model(t_model *model, t_params *params)
 	model->philosophers = philosophers;
 	model->print_rights = malloc(sizeof(pthread_mutex_t));
 	model->die_check_rights = malloc(sizeof(pthread_mutex_t));
+	model->sim_end_check_rights = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(model->sim_end_check_rights, NULL);
 	pthread_mutex_init(model->print_rights, NULL);
 	pthread_mutex_init(model->die_check_rights, NULL);
 	model->params = params;

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:58:10 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/11 16:18:14 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 17:30:48 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	ft_usleep(t_philosopher *this, time_t time)
 	goal = now(this) + time;
 	while (now(this) < goal)
 	{
-		sem_wait(this->die_check_rights);
+		// sem_wait(this->die_check_rights);
 		if (this->params->dead_philo)
 		{
-			sem_post(this->die_check_rights);
+			// sem_post(this->die_check_rights);
 			break ;
 		}
-		sem_post(this->die_check_rights);
+		// sem_post(this->die_check_rights);
 		usleep(50);
 	}
 }

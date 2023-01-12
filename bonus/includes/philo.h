@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 13:13:55 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 14:58:10 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int				init_forks(t_model *model);
 // Misc
 void			free_all(t_model *model);
 void			end_of_simulation(t_philosopher *this);
+int	            simulation_ended(t_philosopher *this);
 
 // Errors
 void			fork_error(void);

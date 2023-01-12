@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 13:17:44 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 17:28:23 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	populate(t_model *model)
 		philosophers[i].forks = model->forks;
 		philosophers[i].print_rights = model->print_rights;
 		philosophers[i].params = model->params;
-		philosophers[i].die_check_rights = model->die_check_rights;
+		philosophers[i].dead_philo = model->dead_philo;
 		philosophers[i].nb_meals = 0;
 		i++;
 	}
@@ -76,7 +76,7 @@ int	get_model(t_model *model, t_params *params)
 	}
 	model->pid_list = malloc(sizeof(pid_t) * params->number_of_philosophers);
 	model->print_rights = sem_open("print_rights", O_CREAT, 0644, 1);
-	model->die_check_rights = sem_open("die_check_rights", O_CREAT, 0644, 1);
+	model->dead_philo = sem_open("dead_philo", O_CREAT, 0644, 1);
 	philosophers = malloc(params->number_of_philosophers
 			* sizeof(t_philosopher));
 	model->forks = forks;

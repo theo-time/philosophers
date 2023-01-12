@@ -6,16 +6,26 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 14:10:08 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 18:26:28 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int	check_dead_philo(t_philosopher *this)
+{
+	int result; 
+
+	pthread_mutex_lock(this->die_check_rights);
+	result = this->params->dead_philo;
+	pthread_mutex_unlock(this->die_check_rights);
+	return(result);
+}
+
 void	print_action(struct timeval current_time, t_philosopher *this,
 		char *action)
 {	
-	if (simulation_ended(this))
+	if (check_dead_philo(this))
 		return ;
 	pthread_mutex_lock(this->print_rights);
 	print_timestamp(&current_time, *(this->params));
@@ -52,12 +62,17 @@ void	dies(t_philosopher *this)
 	gettimeofday(&current_time, NULL);
 	print_action(current_time, this, "died");
 	this->alive = 0;
-	end_of_simulation(this);
-}
-
-void	end_of_simulation(t_philosopher *this)
-{
 	pthread_mutex_lock(this->die_check_rights);
 	this->params->dead_philo = 1;
 	pthread_mutex_unlock(this->die_check_rights);
+}
+
+void	is_full(t_philosopher *this)
+{
+	pthread_mutex_lock(this->sim_end_check_rights);
+	this->params->fed_philos++;
+    // printf("%d\n",  this->params->fed_philos);
+	pthread_mutex_unlock(this->sim_end_check_rights);
+	this->alive = 0;
+	// exit(0);
 }

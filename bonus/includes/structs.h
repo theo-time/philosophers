@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 12:56:23 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 17:58:59 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_params
 typedef struct s_model
 {
 	sem_t			*print_rights;
-	sem_t			*die_check_rights;
+	sem_t			*dead_philo;
 	sem_t			*forks;
 	pid_t			*pid_list;
 	void			*philosophers;
@@ -50,7 +50,8 @@ typedef struct s_philosopher
 	int				time_to_sleep;
 	sem_t			*forks;
 	sem_t			*print_rights;
-	sem_t			*die_check_rights;
+	sem_t			*dead_philo;
+	pthread_t		wait_thread;
 	t_params		*params;
 	t_model			*model;
 }					t_philosopher;

@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 17:05:16 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/12 18:08:19 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef struct s_params
 {
 	struct timeval	simulation_start;
 	int				dead_philo;
+	int				fed_philos;
 	int				number_of_philosophers;
 	int				time_to_eat;
 	int				time_to_die;
@@ -30,6 +31,7 @@ typedef struct s_model
 	pthread_mutex_t	*print_rights;
 	pthread_mutex_t	*die_check_rights;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*sim_end_check_rights;
 	void			*philosophers;
 	t_params		*params;
 }					t_model;
@@ -51,6 +53,7 @@ typedef struct s_philosopher
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*print_rights;
+	pthread_mutex_t	*sim_end_check_rights;
 	pthread_mutex_t	*die_check_rights;
 	t_params		*params;
 	t_model			*model;
