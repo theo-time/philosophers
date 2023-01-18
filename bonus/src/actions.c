@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 15:43:58 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:38:43 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_action(struct timeval current_time, t_philosopher *this,
 {
 	// if (simulation_ended(this))
 	// 	return ;
-	//sem_wait(this->simulation_play);
+	//sem_wait(this->philo_fed);
 	if(!this->alive)
 		return ;
 	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
@@ -65,7 +65,7 @@ void	dies(t_philosopher *this)
 
 void	end_of_simulation(t_philosopher *this)
 {
-	//sem_wait(this->simulation_play);
+	//sem_wait(this->philo_fed);
 	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
 	sem_post(this->dead_philo);
 }

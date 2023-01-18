@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 15:47:30 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:58:32 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void 	*philo_routine(void *philosopher)
 			thinking(this);
 		else if (finished_thinking(this, current_time))
 			eating(this);
-		if (this->nb_meals == this->params->eat_before_end)
-			end_of_simulation(this);
+		if (this->nb_meals >= this->params->eat_before_end && this->params->fed_end_mode)
+			sem_post(this->philo_fed);
 	}
 	return (NULL);
 }
@@ -77,6 +77,7 @@ void 	*philo_routine(void *philosopher)
 void	*philo_loop(t_philosopher *this)
 {
 	pthread_t loop_thread;
+	
 	philo_routine(this);
 	//pthread_create(&loop_thread, NULL, philo_routine, this);
 	//pthread_join(loop_thread);
@@ -104,7 +105,6 @@ void	launch_child_processes(t_model *model, t_params params)
 	pid_t			pid;
     // sem_t 			*sem;
 	// pthread_t		*dead_philo_thread;
-		
 	// pthread_create(&this->wait_thread, NULL, wait_loop, &this);
 	philosophers = (t_philosopher *)model->philosophers;
 	i = 0;
@@ -115,11 +115,11 @@ void	launch_child_processes(t_model *model, t_params params)
 		{
 			//printf("pointer to dead_philo : %p : %d",  philosophers[i].params, philosophers[i].params->dead_philo);
 			philo_loop(&philosophers[i]);
-			//free_this(model);
-			//free_sems(model);
+			free_this(model);
+			free_sems(model);
 			//exit(0);
 			//free_all(model);
-			
+			exit(0);
 		}
 		else if (pid > 0)
 			model->pid_list[i] = pid;
@@ -128,19 +128,29 @@ void	launch_child_processes(t_model *model, t_params params)
 		i++;
 	}
 	i = 0;
+	while(i < params.number_of_philosophers)
+	{
+		sem_wait(model->philo_fed);
+		printf("%d philo fed !\n", i);
+		i++;
+	}
+	i=0;
+	// printf("All philos fed !");
+	//sem_wait(model->dead_philo);
+	while (i < params.number_of_philosophers)
+	{
+		kill(model->pid_list[i], SIGTERM);
+		i++;
+	}
 	// sem_wait(model->dead_philo);
 	// while (i < params.number_of_philosophers)
-	// 	kill(model->pid_list[i++], SIGKILL);
-	sem_wait(model->dead_philo);
-	while (i < params.number_of_philosophers)
-		kill(model->pid_list[i++], SIGTERM);
+	// 	kill(model->pid_list[i++], SIGTERM);
 }
 
 int	main(int argc, char **argv)
 {
 	t_params	params;
 	t_model		model;
-
 	if (!(argc == 5 || argc == 6))
 		return (1);
 	if (!get_params(&params, argc, argv))
@@ -152,7 +162,8 @@ int	main(int argc, char **argv)
 	if (params.number_of_philosophers == 1)
 		return (lonely_philo(model.philosophers));
 	launch_child_processes(&model, params);
-	printf("went this far");
 	free_this(&model);
 	free_sems(&model);
+	printf("went there\n");
+	return(1);
 }

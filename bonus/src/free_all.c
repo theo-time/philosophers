@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:58:14 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 13:45:28 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:38:43 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ void	free_sems(t_model *model)
 	sem_unlink("dead_philo");
 	sem_close(model->print_rights);
 	sem_unlink("print_rights");
-	sem_close(model->simulation_play);
-	sem_unlink("simulation_play");
+	sem_close(model->philo_fed);
+	sem_unlink("philo_fed");
 }

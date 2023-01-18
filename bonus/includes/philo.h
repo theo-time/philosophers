@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 15:46:32 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:21:06 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <fcntl.h>
 # include <pthread.h>
+# include <signal.h>
 # include <semaphore.h>
 # include <stdio.h>
 # include <stdlib.h>
