@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 13:46:47 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 15:43:58 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	dies(t_philosopher *this)
 	this->alive = 0;
 	sem_post(this->dead_philo);
 	sem_wait(this->print_rights);
-	sem_wait(this->simulation_play);
-	usleep(10000);
 	//pthread_join(this->wait_thread, NULL);
 	// end_of_simulation(this);
 }
