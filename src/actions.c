@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 18:26:28 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 11:31:13 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ void	dies(t_philosopher *this)
 	pthread_mutex_lock(this->die_check_rights);
 	this->params->dead_philo = 1;
 	pthread_mutex_unlock(this->die_check_rights);
+	gettimeofday(&current_time, NULL);
+	print_action(current_time, this, "going to sleep\n");
+	usleep(1000000000);
+	gettimeofday(&current_time, NULL);
+	print_action(current_time, this, "finished usleep\n");
 }
 
 void	is_full(t_philosopher *this)

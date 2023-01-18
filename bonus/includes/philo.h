@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 14:58:10 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 13:49:32 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ int				get_params(t_params *params, int argc, char **argv);
 int				get_model(t_model *model, t_params *params);
 int				init_forks(t_model *model);
 
-// Misc
+// close program
 void			free_all(t_model *model);
 void			end_of_simulation(t_philosopher *this);
 int	            simulation_ended(t_philosopher *this);
+void	        free_this(t_model *model);
+void	        free_sems(t_model *model);
+int             check_play(t_philosopher *this);
 
 // Errors
 void			fork_error(void);

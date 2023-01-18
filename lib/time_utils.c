@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:58:10 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/10 17:19:12 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 12:31:01 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_usleep(t_philosopher *this, time_t time)
 			break ;
 		}
 		pthread_mutex_unlock(this->die_check_rights);
-		usleep(50);
+		usleep(500);
 	}
 }
 

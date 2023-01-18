@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 17:36:21 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/18 13:46:47 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ void	print_action(struct timeval current_time, t_philosopher *this,
 {
 	// if (simulation_ended(this))
 	// 	return ;
+	//sem_wait(this->simulation_play);
+	if(!this->alive)
+		return ;
+	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
+	//sem_post(this->dead_philo);
 	sem_wait(this->print_rights);
 	print_timestamp(&current_time, *(this->params));
 	printf(" %d %s\n", this->id, action);
@@ -52,13 +57,17 @@ void	dies(t_philosopher *this)
 	gettimeofday(&current_time, NULL);
 	print_action(current_time, this, "died");
 	this->alive = 0;
-	end_of_simulation(this);
+	sem_post(this->dead_philo);
+	sem_wait(this->print_rights);
+	sem_wait(this->simulation_play);
+	usleep(10000);
+	//pthread_join(this->wait_thread, NULL);
+	// end_of_simulation(this);
 }
 
 void	end_of_simulation(t_philosopher *this)
 {
-	//sem_wait(this->die_check_rights);
-	//this->params->dead_philo = 1;
+	//sem_wait(this->simulation_play);
 	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
 	sem_post(this->dead_philo);
 }

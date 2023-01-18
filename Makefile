@@ -6,7 +6,7 @@
 #    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/12 17:00:19 by teliet           ###   ########.fr        #
+#    Updated: 2023/01/18 14:23:05 by teliet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ $(LIBS):
 #	$(CC) -Wall -Wextra -Werror -I $(HEADERS_bonus) -c $< -o $@
 
 bonus: $(SRC_bonus) $(LIBS) $(HEADERS_bonus)
-	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o philo_bonus
+	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o philo_bonus # -fsanitize=thread 
 	
 debug: $(LIBS) $(HEADERS) clean
 	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -o $(NAME) # -fsanitize=thread
