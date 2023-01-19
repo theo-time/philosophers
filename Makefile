@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
+#    By: theo <theo@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/18 17:53:35 by teliet           ###   ########.fr        #
+#    Updated: 2023/01/19 11:52:32 by theo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ bonus: $(SRC_bonus) $(LIBS) $(HEADERS_bonus)
 	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o philo_bonus # -fsanitize=thread 
 	
 debug: $(LIBS) $(HEADERS) clean
-	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -o $(NAME) # -fsanitize=thread
+	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -fsanitize=thread  -o $(NAME) # -fsanitize=thread
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -I $(HEADERS) -c $< -o $@

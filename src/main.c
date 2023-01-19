@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 18:28:58 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 11:47:12 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,29 @@ void	*philo_loop(void *philosopher)
 	while (this->alive)
 	{
 		ft_usleep(this, 1);
-		if (simulation_ended(this) || check_dead_philo(this))
+		if (simulation_ended(this))
+		{
+			//printf("%d is out of the loop | cause : all philo fed\n", this->id);
 			break ;
+
+		}
+		if (check_dead_philo(this))
+		{
+			//printf("%d is out of the loop | cause : dead philo\n", this->id);
+			break ;
+		}
 		gettimeofday(&current_time, NULL);
 		if (is_dead(this, current_time))
 			dies(this);
 		if (finished_sleeping(this, current_time))
 			thinking(this);
 		else if (finished_thinking(this, current_time))
+		{
 			eating(this);
-		if (this->nb_meals == this->params->eat_before_end)
-			is_full(this);
+			if (this->nb_meals == this->params->eat_before_end)
+				is_full(this);
+		}
+
 	}
 	return (NULL);
 }
