@@ -6,25 +6,15 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 11:53:45 by theo             ###   ########.fr       */
+/*   Updated: 2023/01/19 11:58:53 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_dead_philo(t_philosopher *this)
-{
-	int result; 
-
-	pthread_mutex_lock(this->die_check_rights);
-	result = this->params->dead_philo;
-	pthread_mutex_unlock(this->die_check_rights);
-	return(result);
-}
-
 void	print_action(struct timeval current_time, t_philosopher *this,
 		char *action)
-{	
+{
 	if (check_dead_philo(this))
 		return ;
 	pthread_mutex_lock(this->print_rights);
@@ -65,20 +55,4 @@ void	dies(t_philosopher *this)
 	pthread_mutex_lock(this->die_check_rights);
 	this->params->dead_philo = 1;
 	pthread_mutex_unlock(this->die_check_rights);
-	// gettimeofday(&current_time, NULL);
-	//pthread_mutex_lock(this->print_rights);
-
-	// print_action(current_time, this, "going to sleep\n");
-	// usleep(1000000000);
-	// gettimeofday(&current_time, NULL);
-	// print_action(current_time, this, "finished usleep\n");
-}
-
-void	is_full(t_philosopher *this)
-{
-	pthread_mutex_lock(this->sim_end_check_rights);
-	this->params->fed_philos++;
-    //printf("%d is fed | total : %d\n", this->id, this->params->fed_philos);
-	pthread_mutex_unlock(this->sim_end_check_rights);
-	// exit(0);
 }

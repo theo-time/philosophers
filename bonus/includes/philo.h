@@ -6,7 +6,7 @@
 /*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 11:12:09 by theo             ###   ########.fr       */
+/*   Updated: 2023/01/19 12:10:09 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <fcntl.h>
 # include <pthread.h>
-# include <signal.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
@@ -26,6 +26,8 @@
 # include "structs.h"
 
 // Philosopher action
+void			*philo_routine(void *philosopher);
+int				lonely_philo(t_philosopher *philosophers);
 void			eating(t_philosopher *this);
 void			sleeping(t_philosopher *this);
 void			take_fork(t_philosopher *this);
@@ -58,9 +60,9 @@ int				init_forks(t_model *model);
 // close program
 void			free_all(t_model *model);
 void			end_of_simulation(t_philosopher *this);
-int	            simulation_ended(t_philosopher *this);
-void	        free_this(t_model *model);
-void	        free_sems(t_model *model);
+int				simulation_ended(t_philosopher *this);
+void			free_all(t_model *model);
+
 // Errors
 void			fork_error(void);
 

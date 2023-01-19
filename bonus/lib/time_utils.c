@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:58:10 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 15:41:23 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 11:59:58 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 long	now(t_philosopher *this)
 {
 	struct timeval	tv;
-	////////check_play(this);
+
 	gettimeofday(&tv, NULL);
 	return (time_elapsed(this->params->simulation_start, tv));
 }
@@ -27,10 +27,7 @@ void	ft_usleep(t_philosopher *this, time_t time)
 	goal = 0;
 	goal = now(this) + time;
 	while (now(this) < goal)
-	{
-		////check_play(this);
 		usleep(1000);
-	}
 }
 
 void	print_timestamp(struct timeval *tv, t_params params)

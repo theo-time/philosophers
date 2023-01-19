@@ -3,23 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:58:14 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 17:38:43 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 12:09:37 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_this(t_model *model)
+void	free_all(t_model *model)
 {
 	free(model->philosophers);
 	free(model->pid_list);
-}
-
-void	free_sems(t_model *model)
-{
 	sem_close(model->forks);
 	sem_unlink("forks");
 	sem_close(model->dead_philo);

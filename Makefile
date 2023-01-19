@@ -6,16 +6,16 @@
 #    By: theo <theo@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/19 11:52:32 by theo             ###   ########.fr        #
+#    Updated: 2023/01/19 12:10:47 by theo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = src/main.c src/actions.c src/eating.c src/timers.c src/timers_2.c src/init.c \
+SRC = src/main.c src/actions.c src/checks.c src/eating.c src/timers.c src/timers_2.c src/init.c \
 lib/parser_utils.c lib/time_utils.c  src/free_all.c \
 
-SRC_bonus = bonus/src/main.c bonus/src/actions.c bonus/src/eating.c bonus/src/timers.c bonus/src/init.c \
+SRC_bonus = bonus/src/main.c bonus/src/philo_loop.c bonus/src/actions.c bonus/src/eating.c bonus/src/timers.c bonus/src/init.c \
  bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c bonus/src/errors.c \
 
 CC = gcc

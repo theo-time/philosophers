@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 17:38:43 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 12:06:22 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 void	print_action(struct timeval current_time, t_philosopher *this,
 		char *action)
 {
-	// if (simulation_ended(this))
-	// 	return ;
-	//sem_wait(this->philo_fed);
-	if(!this->alive)
+	if (!this->alive)
 		return ;
-	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
-	//sem_post(this->dead_philo);
 	sem_wait(this->print_rights);
 	print_timestamp(&current_time, *(this->params));
 	printf(" %d %s\n", this->id, action);
@@ -59,13 +54,4 @@ void	dies(t_philosopher *this)
 	this->alive = 0;
 	sem_post(this->dead_philo);
 	sem_wait(this->print_rights);
-	//pthread_join(this->wait_thread, NULL);
-	// end_of_simulation(this);
-}
-
-void	end_of_simulation(t_philosopher *this)
-{
-	//sem_wait(this->philo_fed);
-	//printf(" %d pointer to dead_philo : %p : %d\n", this->id, &(this->params->dead_philo), this->params->dead_philo);
-	sem_post(this->dead_philo);
 }

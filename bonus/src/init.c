@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 17:57:21 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 12:03:10 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	get_params(t_params *params, int argc, char **argv)
 
 sem_t	*ft_sem_open(char *name, int initial_value)
 {
-	sem_t			*sem;
+	sem_t	*sem;
 
 	sem = sem_open(name, O_CREAT | O_EXCL, 0644, initial_value);
 	if (sem == SEM_FAILED)
@@ -74,7 +74,7 @@ sem_t	*ft_sem_open(char *name, int initial_value)
 		sem_unlink(name);
 		sem = sem_open(name, O_CREAT, 0644, initial_value);
 	}
-	return sem;	
+	return (sem);
 }
 
 int	get_model(t_model *model, t_params *params)
@@ -91,11 +91,12 @@ int	get_model(t_model *model, t_params *params)
 		forks = sem_open("forks", O_CREAT, 0644,
 				params->number_of_philosophers);
 	}
-	model->print_rights = ft_sem_open( "print_rights",  1);
-	model->dead_philo = ft_sem_open( "dead_philo", 0);
-	model->philo_fed = ft_sem_open( "philo_fed", 0);
+	model->print_rights = ft_sem_open("print_rights", 1);
+	model->dead_philo = ft_sem_open("dead_philo", 0);
+	model->philo_fed = ft_sem_open("philo_fed", 0);
 	model->pid_list = malloc(sizeof(pid_t) * params->number_of_philosophers);
-	model->philosophers = malloc(params->number_of_philosophers * sizeof(t_philosopher));
+	model->philosophers = malloc(params->number_of_philosophers
+			* sizeof(t_philosopher));
 	model->forks = forks;
 	model->params = params;
 	if (!model->philosophers || !model->pid_list)

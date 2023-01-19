@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/12 18:28:37 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/19 11:59:26 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			take_fork(t_philosopher *this, pthread_mutex_t *fork);
 void			drop_fork(pthread_mutex_t *fork);
 void			dies(t_philosopher *this);
 void			thinking(t_philosopher *this);
-void	        is_full(t_philosopher *this);
+void			is_full(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);
@@ -55,6 +55,6 @@ int				init_forks(t_model *model);
 void			free_all(t_model *model);
 void			end_of_simulation(t_philosopher *this);
 int				simulation_ended(t_philosopher *this);
-int	            check_dead_philo(t_philosopher *this);
+int				check_dead_philo(t_philosopher *this);
 
 #endif
