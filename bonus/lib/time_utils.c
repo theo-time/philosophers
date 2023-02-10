@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:58:10 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 11:59:58 by theo             ###   ########.fr       */
+/*   Updated: 2023/02/07 12:11:00 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,20 @@ long	now(t_philosopher *this)
 
 void	ft_usleep(t_philosopher *this, time_t time)
 {
-	time_t	goal;
+	time_t			goal;
+	struct timeval	current_time;
 
 	goal = 0;
 	goal = now(this) + time;
 	while (now(this) < goal)
-		usleep(1000);
+	{
+		if (is_dead(this))
+		{
+			dies(this);
+			break ;
+		}
+		usleep(500);
+	}
 }
 
 void	print_timestamp(struct timeval *tv, t_params params)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:03:42 by theo              #+#    #+#             */
-/*   Updated: 2023/01/19 12:09:57 by theo             ###   ########.fr       */
+/*   Updated: 2023/01/23 17:18:12 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 void	init_philo(t_philosopher *this)
 {
-	if (this->id % 2 == 0)
-		eating(this);
-	else
+	if (this->id % 2 == 1)
 	{
 		thinking(this);
-		ft_usleep(this, this->params->time_to_eat - 1);
+		ft_usleep(this, this->time_to_eat - 1);
 	}
 }
 
@@ -32,17 +30,14 @@ void	*philo_routine(void *philosopher)
 	init_philo(this);
 	while (this->alive)
 	{
-		ft_usleep(this, 1);
-		gettimeofday(&current_time, NULL);
-		if (is_dead(this, current_time))
-			dies(this);
-		else if (finished_sleeping(this, current_time))
-			thinking(this);
-		else if (finished_thinking(this, current_time))
+		if (this->alive)
 			eating(this);
-		if (this->nb_meals >= this->params->eat_before_end
-			&& this->params->fed_end_mode)
-			sem_post(this->philo_fed);
+		if (this->nb_meals == this->params->eat_before_end)
+			is_full(this);
+		if (this->alive)
+			sleeping(this);
+		if (this->alive)
+			thinking(this);
 	}
 	return (NULL);
 }

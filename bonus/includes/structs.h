@@ -6,7 +6,7 @@
 /*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/18 17:57:41 by teliet           ###   ########.fr       */
+/*   Updated: 2023/01/26 13:30:03 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ typedef struct s_params
 	int				fed_end_mode;
 }					t_params;
 
-typedef struct s_model
-{
-	sem_t			*print_rights;
-	sem_t			*dead_philo;
-	sem_t			*philo_fed;
-	sem_t			*forks;
-	pid_t			*pid_list;
-	void			*philosophers;
-	t_params		*params;
-}					t_model;
-
-// State 0 : thinking, state 1 : eating, state 2 : sleeping
 typedef struct s_philosopher
 {
 	int				id;
@@ -56,7 +44,17 @@ typedef struct s_philosopher
 	sem_t			*philo_fed;
 	pthread_t		wait_thread;
 	t_params		*params;
-	t_model			*model;
 }					t_philosopher;
+
+typedef struct s_model
+{
+	sem_t			*print_rights;
+	sem_t			*dead_philo;
+	sem_t			*philo_fed;
+	sem_t			*forks;
+	pid_t			pid_list[200];
+	t_philosopher	philosophers[200];
+	t_params		*params;
+}					t_model;
 
 #endif

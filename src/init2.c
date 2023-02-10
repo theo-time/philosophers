@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timers_2.c                                         :+:      :+:    :+:   */
+/*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/12 14:00:06 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 11:58:15 by theo             ###   ########.fr       */
+/*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
+/*   Updated: 2023/02/08 13:37:46 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	simulation_ended(t_philosopher *this)
+void	init_pointers(t_model *model)
 {
-	int	output;
-
-	pthread_mutex_lock(this->sim_end_check_rights);
-	output = (this->params->number_of_philosophers == this->params->fed_philos);
-	pthread_mutex_unlock(this->sim_end_check_rights);
-	return (output);
+	model->threads = NULL;
+	model->forks = NULL;
+	model->philosophers = NULL;
+	model->print_rights = NULL;
+	model->die_check_rights = NULL;
+	model->sim_end_check_rights = NULL;
 }

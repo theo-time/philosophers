@@ -3,20 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: theo <theo@student.42.fr>                  +#+  +:+       +#+         #
+#    By: teliet <teliet@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/29 20:41:39 by teliet            #+#    #+#              #
-#    Updated: 2023/01/19 12:10:47 by theo             ###   ########.fr        #
+#    Updated: 2023/02/08 13:39:07 by teliet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
+BONUS = philo_bonus
 
-SRC = src/main.c src/actions.c src/checks.c src/eating.c src/timers.c src/timers_2.c src/init.c \
+SRC = src/main.c src/actions.c src/checks.c src/eating.c src/timers.c src/init.c src/init2.c \
 lib/parser_utils.c lib/time_utils.c  src/free_all.c \
 
 SRC_bonus = bonus/src/main.c bonus/src/philo_loop.c bonus/src/actions.c bonus/src/eating.c bonus/src/timers.c bonus/src/init.c \
- bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c bonus/src/errors.c \
+ bonus/lib/parser_utils.c  bonus/lib/time_utils.c  bonus/src/free_all.c bonus/src/errors.c  bonus/src/checks.c  \
 
 CC = gcc
 
@@ -36,14 +37,13 @@ $(NAME): $(OBJ) $(LIBS) $(HEADERS)
 $(LIBS):
 	make -C lib/ft_printf
 
-#$(OBJ_bonus):$(SRC_bonus) $(HEADERS_bonus)
-#	$(CC) -Wall -Wextra -Werror -I $(HEADERS_bonus) -c $< -o $@
+bonus: ${BONUS}
 
-bonus: $(SRC_bonus) $(LIBS) $(HEADERS_bonus)
-	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o philo_bonus # -fsanitize=thread 
+${BONUS}: $(SRC_bonus) $(LIBS) $(HEADERS_bonus)
+	$(CC) $(SRC_bonus) $(LIBS) -I $(HEADERS_bonus) -g3 -o ${BONUS} # -fsanitize=thread 
 	
 debug: $(LIBS) $(HEADERS) clean
-	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -fsanitize=thread  -o $(NAME) # -fsanitize=thread
+	$(CC) $(SRC) $(LIBS) -I $(HEADERS) -g3 -o $(NAME) # -fsanitize=thread
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -I $(HEADERS) -c $< -o $@
@@ -54,5 +54,6 @@ clean:
 
 fclean: clean
 	/bin/rm -f ${NAME}
+	/bin/rm -f ${BONUS}
 
 re: fclean all

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 12:03:10 by theo             ###   ########.fr       */
+/*   Updated: 2023/02/07 12:23:27 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	get_params(t_params *params, int argc, char **argv)
 		|| !is_integer(argv[4]))
 		return (0);
 	params->number_of_philosophers = ft_atoi(argv[1]);
+	if (params->number_of_philosophers > 200)
+		params->number_of_philosophers = 200;
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
@@ -86,7 +88,6 @@ int	get_model(t_model *model, t_params *params)
 			params->number_of_philosophers);
 	if (forks == SEM_FAILED)
 	{
-		sem_close(forks);
 		sem_unlink("forks");
 		forks = sem_open("forks", O_CREAT, 0644,
 				params->number_of_philosophers);
@@ -94,9 +95,6 @@ int	get_model(t_model *model, t_params *params)
 	model->print_rights = ft_sem_open("print_rights", 1);
 	model->dead_philo = ft_sem_open("dead_philo", 0);
 	model->philo_fed = ft_sem_open("philo_fed", 0);
-	model->pid_list = malloc(sizeof(pid_t) * params->number_of_philosophers);
-	model->philosophers = malloc(params->number_of_philosophers
-			* sizeof(t_philosopher));
 	model->forks = forks;
 	model->params = params;
 	if (!model->philosophers || !model->pid_list)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:40:59 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 12:10:37 by theo             ###   ########.fr       */
+/*   Updated: 2023/02/07 13:03:37 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	*check_death_routine(void *model_ptr)
 	i = 0;
 	model = (t_model *)model_ptr;
 	sem_wait(model->dead_philo);
+	sem_wait(model->print_rights);
 	while (i < model->params->number_of_philosophers)
 	{
-		kill(model->pid_list[i], SIGTERM);
+		kill(model->pid_list[i], SIGINT);
 		i++;
 	}
 	free_all(model);
@@ -39,10 +40,11 @@ void	check_fed_philos(t_model *model, t_params params)
 		sem_wait(model->philo_fed);
 		i++;
 	}
+	sem_wait(model->print_rights);
 	i = 0;
 	while (i < params.number_of_philosophers)
 	{
-		kill(model->pid_list[i], SIGTERM);
+		kill(model->pid_list[i], SIGINT);
 		i++;
 	}
 }

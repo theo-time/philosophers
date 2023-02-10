@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/19 12:10:09 by theo             ###   ########.fr       */
+/*   Updated: 2023/01/23 17:19:41 by teliet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void			take_fork(t_philosopher *this);
 void			drop_fork(t_philosopher *this);
 void			dies(t_philosopher *this);
 void			thinking(t_philosopher *this);
+void			is_full(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);
@@ -45,7 +46,7 @@ void			print_action(struct timeval t, t_philosopher *this, char *act);
 // Time
 int				time_elapsed(struct timeval start_time, struct timeval time);
 void			ft_usleep(t_philosopher *this, time_t time);
-int				is_dead(t_philosopher *this, struct timeval time);
+int				is_dead(t_philosopher *this);
 int				finished_eating(t_philosopher *this, struct timeval time);
 int				finished_sleeping(t_philosopher *this, struct timeval time);
 int				finished_thinking(t_philosopher *this, struct timeval time);
