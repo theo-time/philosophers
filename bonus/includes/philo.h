@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 12:00:42 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/23 17:19:41 by teliet           ###   ########.fr       */
+/*   Updated: 2023/02/10 18:24:22 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ void			take_fork(t_philosopher *this);
 void			drop_fork(t_philosopher *this);
 void			dies(t_philosopher *this);
 void			thinking(t_philosopher *this);
-void			is_full(t_philosopher *this);
+
+// Checks
+int	            is_full(t_philosopher *this);
+int	            is_alive(t_philosopher *this);
 
 // Parser utils
 unsigned long	ft_atoi(const char *str);

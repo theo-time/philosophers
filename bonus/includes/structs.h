@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:36:43 by teliet            #+#    #+#             */
-/*   Updated: 2023/01/26 13:30:03 by teliet           ###   ########.fr       */
+/*   Updated: 2023/02/10 17:59:56 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ typedef struct s_philosopher
 	int				time_to_sleep;
 	sem_t			*forks;
 	sem_t			*print_rights;
-	sem_t			*dead_philo;
+	sem_t			*simulation_ended;
 	sem_t			*philo_fed;
 	pthread_t		wait_thread;
+	pthread_mutex_t	*wait_mutex;
 	t_params		*params;
 }					t_philosopher;
 
 typedef struct s_model
 {
+	pthread_t		wait_thread;
 	sem_t			*print_rights;
-	sem_t			*dead_philo;
+	sem_t			*simulation_ended;
 	sem_t			*philo_fed;
 	sem_t			*forks;
 	pid_t			pid_list[200];

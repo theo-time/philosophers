@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:22:27 by teliet            #+#    #+#             */
-/*   Updated: 2023/02/07 12:23:27 by teliet           ###   ########.fr       */
+/*   Updated: 2023/02/10 17:49:19 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	populate(t_model *model)
 		philosophers[i].time_to_sleep = model->params->time_to_sleep;
 		philosophers[i].forks = model->forks;
 		philosophers[i].print_rights = model->print_rights;
+		philosophers[i].wait_thread = model->wait_thread;
 		philosophers[i].params = model->params;
-		philosophers[i].dead_philo = model->dead_philo;
+		philosophers[i].simulation_ended = model->simulation_ended;
 		philosophers[i].philo_fed = model->philo_fed;
 		philosophers[i].nb_meals = 0;
 		i++;
@@ -49,7 +50,6 @@ int	get_params(t_params *params, int argc, char **argv)
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
-	params->dead_philo = 0;
 	params->fed_end_mode = 1;
 	if (argc == 6)
 	{
@@ -93,7 +93,7 @@ int	get_model(t_model *model, t_params *params)
 				params->number_of_philosophers);
 	}
 	model->print_rights = ft_sem_open("print_rights", 1);
-	model->dead_philo = ft_sem_open("dead_philo", 0);
+	model->simulation_ended = ft_sem_open("dead_philo", 0);
 	model->philo_fed = ft_sem_open("philo_fed", 0);
 	model->forks = forks;
 	model->params = params;

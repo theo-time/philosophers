@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teliet <teliet@student.42.fr>              +#+  +:+       +#+        */
+/*   By: theo <theo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:26:31 by teliet            #+#    #+#             */
-/*   Updated: 2023/02/07 12:14:13 by teliet           ###   ########.fr       */
+/*   Updated: 2023/02/10 18:21:56 by theo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_action(struct timeval current_time, t_philosopher *this,
 		char *action)
 {
-	if (!this->alive)
+	if (!is_alive(this))
 		return ;
 	sem_wait(this->print_rights);
 	print_timestamp(&current_time, *(this->params));
@@ -71,7 +71,8 @@ void	dies(t_philosopher *this)
 	struct timeval	current_time;
 
 	gettimeofday(&current_time, NULL);
-	print_action(current_time, this, "died");
+	pthread_mutex_lock(this->wait_mutex);
 	this->alive = 0;
-	sem_post(this->dead_philo);
+	pthread_mutex_unlock(this->wait_mutex);
+	sem_post(this->simulation_ended);
 }
